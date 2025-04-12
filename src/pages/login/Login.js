@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // styles
 import styles from './Login.module.css';
@@ -34,6 +35,7 @@ export default function Login() {
         />
       </label>
       <button className="btn">Login</button>
+      <p>Don't have an account? <Link to="/signup">Signup</Link></p>
     </form>
   );
 }
