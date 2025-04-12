@@ -60,7 +60,7 @@ export default function Signup() {
           onChange={(e) => setDisplayName(e.target.value)}
         />
       </label>
-      <button className="btn" disabled={isLoading}>Signup</button>
+      <button className='btn' disabled={isLoading}>{isLoading ? 'Loading...' : 'Signup'}</button>
       {error && <p className={styles.error}>{error}</p>}
       <p>Already have an account? <Link to="/login">Login</Link></p>
     </form>

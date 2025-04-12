@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useLogin } from '../../hooks/useLogin';
 
 // styles
 import styles from './Login.module.css';
@@ -7,10 +8,11 @@ import styles from './Login.module.css';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login, error, isLoading } = useLogin();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', { email, password });
+    login(email, password);
   }
 
   return (
@@ -34,7 +36,8 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)} 
         />
       </label>
-      <button className="btn">Login</button>
+      <button className='btn' disabled={isLoading}>{isLoading ? 'Loading...' : 'Login'}</button>
+      {error && <p className={styles.error}>{error}</p>}
       <p>Don't have an account? <Link to="/signup">Signup</Link></p>
     </form>
   );
