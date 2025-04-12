@@ -1,7 +1,6 @@
-
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useSignup } from '../../hooks/useSignup';
 
 // styles
 import styles from './Signup.module.css';
@@ -11,10 +10,15 @@ export default function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const { signup, error, isLoading } = useSignup();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form submitted:', { email, password, confirmPassword });
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+    signup(email, password, displayName);
   }
 
   return (
@@ -56,7 +60,8 @@ export default function Signup() {
           onChange={(e) => setDisplayName(e.target.value)}
         />
       </label>
-      <button className="btn">Signup</button>
+      <button className="btn" disabled={isLoading}>Signup</button>
+      {error && <p className={styles.error}>{error}</p>}
       <p>Already have an account? <Link to="/login">Login</Link></p>
     </form>
   );
