@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { db } from '../firebase/config';
+import { db, timestamp } from '../firebase/config';
 import { collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 let initialState = {
@@ -38,10 +38,13 @@ export const useFirestore = (collectionName) => {
     dispatch({ type: 'IS_LOADING' });
 
     try {
+      doc.createdAt = timestamp.fromDate(new Date());
+      console.log('Adding document:', doc);
       const newDoc = await addDoc(ref, doc);
       dispatch({ type: 'ADDED_DOCUMENT', payload: newDoc });
     } catch (error) {
-      dispatch({ type: 'ERROR', payload: error.code });
+      console.error('Firestore error:', error);
+      dispatch({ type: 'ERROR', payload: error.message });
     }
   };
 
@@ -54,7 +57,7 @@ export const useFirestore = (collectionName) => {
       await updateDoc(docRef, updates);
       dispatch({ type: 'UPDATED_DOCUMENT', payload: updates });
     } catch (error) {
-      dispatch({ type: 'ERROR', payload: error.code });
+      dispatch({ type: 'ERROR', payload: error.message });
     }
   }
 
@@ -67,7 +70,7 @@ export const useFirestore = (collectionName) => {
       await deleteDoc(docRef);
       dispatch({ type: 'DELETED_DOCUMENT' });
     } catch (error) {
-      dispatch({ type: 'ERROR', payload: error.code });
+      dispatch({ type: 'ERROR', payload: error.message });
     }
   }
   
