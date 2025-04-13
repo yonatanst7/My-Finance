@@ -16,7 +16,7 @@ const firestoreReducer = (state, action) => {
     case 'ADDED_DOCUMENT':
       return { isLoading: false, error: null, document: action.payload, success: true };
     case 'DELETED_DOCUMENT':
-      return { isLoading: false, error: null, document: null, success: true };
+      return { isLoading: false, error: null, document: action.payload, success: true };
     case 'UPDATED_DOCUMENT':
       return { isLoading: false, error: null, document: action.payload, success: true };
     case 'ERROR':
@@ -53,8 +53,8 @@ export const useFirestore = (collectionName) => {
 
     try {
       const docRef = doc(ref, id);
-      await updateDoc(docRef, updates);
-      dispatch({ type: 'UPDATED_DOCUMENT', payload: updates });
+      const updatedDocument = await updateDoc(docRef, updates);
+      dispatch({ type: 'UPDATED_DOCUMENT', payload: updatedDocument });
     } catch (error) {
       dispatch({ type: 'ERROR', payload: error.message });
     }
@@ -66,8 +66,8 @@ export const useFirestore = (collectionName) => {
 
     try {
       const docRef = doc(ref, id);
-      await deleteDoc(docRef);
-      dispatch({ type: 'DELETED_DOCUMENT' });
+      const deletedDocument = await deleteDoc(docRef);
+      dispatch({ type: 'DELETED_DOCUMENT', payload: deletedDocument });
     } catch (error) {
       dispatch({ type: 'ERROR', payload: error.message });
     }

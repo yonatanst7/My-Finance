@@ -13,6 +13,7 @@ export default function Home() {
   const { documents, error } = useCollection({
     collectionName: 'transactions',
     _query: ['uid', '==', user.uid],
+    _orderBy: ['createdAt', 'desc'],
   });
 
   return (

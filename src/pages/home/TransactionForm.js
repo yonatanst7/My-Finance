@@ -48,7 +48,7 @@ export default function TransactionForm({ uid }) {
           />
         </label>
 
-        <button className="btn">Add Transaction</button>
+        <button className='btn' disabled={response.isLoading}>{response.isLoading ? 'Loading...' : 'Add Transaction'}</button>
       </form>
     </>
   );
